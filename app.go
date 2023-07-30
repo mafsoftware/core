@@ -12,7 +12,7 @@ const (
 	tokenIssuer = "mafsoftware.com"
 )
 
-type AccessClaimsProvider func(token string, options TaskOptions) (*AccessClaims, *Error)
+type AccessClaimsProvider func(token string, options TaskOptions, lang string) (*AccessClaims, *Error)
 
 type App struct {
 	Logger
@@ -55,7 +55,7 @@ func (app *App) validateRequestWithOptions(r *http.Request, options TaskOptions)
 	if err != nil {
 		return UserInfo{Language: lang}, err
 	}
-	claims, err := app.claimsProvider(token, options)
+	claims, err := app.claimsProvider(token, options, lang)
 	if err != nil {
 		return UserInfo{Language: lang}, err
 	}
