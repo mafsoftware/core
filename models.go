@@ -263,10 +263,12 @@ func (u UserInfo) LanguageTag() language.Tag {
 // AccessClaims ******************************************************************
 
 type AccessClaims struct {
-	userId                  string
-	access                  Access
-	orgId                   string
-	issuer                  string
-	productUserAccess       []string
-	productEntityUserAccess []string
+	UserId                  string
+	Access                  Access
+	OrgId                   string
+	Issuer                  string
+	IssuesAt                int64
+	ExpiresAt               int64
+	ProductUserAccess       []string
+	ProductEntityUserAccess []string
 }

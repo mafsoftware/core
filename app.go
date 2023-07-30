@@ -59,20 +59,20 @@ func (app *App) validateRequestWithOptions(r *http.Request, options TaskOptions)
 	if err != nil {
 		return UserInfo{Language: lang}, err
 	}
-	if claims.issuer != tokenIssuer {
+	if claims.Issuer != tokenIssuer {
 		return UserInfo{Language: lang}, newError(ErrorCodeErrorBadAccessToken)
 	}
 	// FIXME: need to test replacing this call with a call to options.Access.HasEqualOrMoreAccessThan
-	if !options.Access.HasEqualOrMoreAccess(claims.access) {
+	if !options.Access.HasEqualOrMoreAccess(claims.Access) {
 		return UserInfo{Language: lang}, newError(ErrorCodeErrorBadAccessToken)
 	}
 	userInfo := UserInfo{
-		UserId:              claims.userId,
-		OrgId:               claims.orgId,
-		Access:              claims.access,
+		UserId:              claims.UserId,
+		OrgId:               claims.OrgId,
+		Access:              claims.Access,
 		Language:            lang,
-		ProductAccess:       claims.productUserAccess,
-		ProductEntityAccess: claims.productEntityUserAccess,
+		ProductAccess:       claims.ProductUserAccess,
+		ProductEntityAccess: claims.ProductEntityUserAccess,
 	}
 	return userInfo, nil
 }
