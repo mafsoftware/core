@@ -23,7 +23,7 @@ type App struct {
 	serverSecretKey string
 }
 
-func New(router *httprouter.Router, logger Logger, claimsProvider AccessClaimsProvider, appSecretKey, serverSecretKey, build string) *App {
+func NewApp(router *httprouter.Router, logger Logger, claimsProvider AccessClaimsProvider, appSecretKey, serverSecretKey, build string) *App {
 	return &App{
 		Logger:          logger,
 		Build:           build,
