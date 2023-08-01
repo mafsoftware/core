@@ -1,6 +1,6 @@
 module github.com/mafsoftware/core
 
-go 1.19
+go 1.20
 
 require (
 	github.com/julienschmidt/httprouter v1.3.0
