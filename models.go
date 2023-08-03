@@ -4,7 +4,34 @@ import (
 	"golang.org/x/text/language"
 )
 
-// Access ******************************************************************
+type UserInfo struct {
+	UserId              string
+	OrgId               string
+	Access              Access
+	Language            string
+	ProductAccess       []string
+	ProductEntityAccess []string
+}
+
+func (u UserInfo) LanguageTag() language.Tag {
+	switch u.Language {
+	case "es-419":
+		return language.MustParse("es-419")
+	default:
+		return language.MustParse("en-US")
+	}
+}
+
+type AccessClaims struct {
+	UserId                  string
+	Access                  Access
+	OrgId                   string
+	Issuer                  string
+	IssuesAt                int64
+	ExpiresAt               int64
+	ProductUserAccess       []string
+	ProductEntityUserAccess []string
+}
 
 type Access int
 
@@ -42,37 +69,4 @@ func (a Access) HasEqualOrMoreAccess(other Access) bool {
 
 func (a Access) HasEqualOrMoreAccessThan(other Access) bool {
 	return a <= other
-}
-
-// UserInfo ******************************************************************
-
-type UserInfo struct {
-	UserId              string
-	OrgId               string
-	Access              Access
-	Language            string
-	ProductAccess       []string
-	ProductEntityAccess []string
-}
-
-func (u UserInfo) LanguageTag() language.Tag {
-	switch u.Language {
-	case "es-419":
-		return language.MustParse("es-419")
-	default:
-		return language.MustParse("en-US")
-	}
-}
-
-// AccessClaims ******************************************************************
-
-type AccessClaims struct {
-	UserId                  string
-	Access                  Access
-	OrgId                   string
-	Issuer                  string
-	IssuesAt                int64
-	ExpiresAt               int64
-	ProductUserAccess       []string
-	ProductEntityUserAccess []string
 }
