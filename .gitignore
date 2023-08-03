@@ -20,4 +20,8 @@
 
 __debug_bin
 
+### Go Workspace ###
+go.work
+go.work.sum
+
 # End of https://www.gitignore.io/api/go
