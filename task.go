@@ -37,6 +37,16 @@ type TaskOptions struct {
 	RefreshingToken   bool
 }
 
+// AccessOptions contains frequently used TaskOptions.
+type AccessOptions struct {
+	Open        TaskOptions
+	User        TaskOptions
+	Admin       TaskOptions
+	SecretAdmin TaskOptions
+	SecretOwner TaskOptions
+	Refresh     TaskOptions
+}
+
 type TaskHandleFunc[I, O any] func(input Task[I]) (*O, *Error)
 
 type TaskVoidHandleFunc[O any] func(input TaskVoid) (*O, *Error)
