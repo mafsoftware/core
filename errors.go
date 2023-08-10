@@ -88,11 +88,11 @@ func errorHttpStatusCode(code ErrorCode) int {
 	}
 }
 
-func newError(code ErrorCode) *Error {
-	return newErrorWithDetails(code, "")
+func NewError(code ErrorCode) *Error {
+	return NewErrorWithDetails(code, "")
 }
 
-func newErrorWithDetails(code ErrorCode, details string) *Error {
+func NewErrorWithDetails(code ErrorCode, details string) *Error {
 	info := make(map[string]string)
 	if len(details) > 0 {
 		info["details"] = details

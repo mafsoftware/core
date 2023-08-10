@@ -143,7 +143,7 @@ func decodeFrom[T any](r *http.Request) (*T, *Error) {
 	decoder := json.NewDecoder(r.Body)
 	err := decoder.Decode(&request)
 	if err != nil {
-		return nil, newError(ErrorCodeIncorrectRequestBody)
+		return nil, NewError(ErrorCodeIncorrectRequestBody)
 
 	}
 	return request, nil

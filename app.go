@@ -60,11 +60,11 @@ func (app *App) validateRequestWithOptions(r *http.Request, options TaskOptions)
 		return UserInfo{Language: lang}, err
 	}
 	if claims.Issuer != tokenIssuer {
-		return UserInfo{Language: lang}, newError(ErrorCodeErrorBadAccessToken)
+		return UserInfo{Language: lang}, NewError(ErrorCodeErrorBadAccessToken)
 	}
 	// FIXME: need to test replacing this call with a call to options.Access.HasEqualOrMoreAccessThan
 	if !options.Access.HasEqualOrMoreAccess(claims.Access) {
-		return UserInfo{Language: lang}, newError(ErrorCodeErrorBadAccessToken)
+		return UserInfo{Language: lang}, NewError(ErrorCodeErrorBadAccessToken)
 	}
 	userInfo := UserInfo{
 		UserId:              claims.UserId,
@@ -80,10 +80,10 @@ func (app *App) validateRequestWithOptions(r *http.Request, options TaskOptions)
 func (app *App) checkAppSecretKey(r *http.Request) *Error {
 	appKey := r.Header.Get("AppSecretKey")
 	if appKey == "" {
-		return newError(ErrorCodeAppSecretKeyNotFound)
+		return NewError(ErrorCodeAppSecretKeyNotFound)
 	}
 	if appKey != app.appSecretKey {
-		return newError(ErrorCodeInvalidAppSecretKey)
+		return NewError(ErrorCodeInvalidAppSecretKey)
 	}
 	return nil
 }
@@ -91,10 +91,10 @@ func (app *App) checkAppSecretKey(r *http.Request) *Error {
 func (app *App) checkServerSecretKey(r *http.Request) *Error {
 	secret := r.Header.Get("ServerSecretKey")
 	if secret == "" {
-		return newError(ErrorCodeEndpointSecretKeyNotFound)
+		return NewError(ErrorCodeEndpointSecretKeyNotFound)
 	}
 	if secret != app.serverSecretKey {
-		return newError(ErrorCodeEndpointForbidden)
+		return NewError(ErrorCodeEndpointForbidden)
 	}
 	return nil
 }
@@ -116,15 +116,15 @@ func (app *App) extractLanguageTag(r *http.Request) string {
 func (app *App) extractToken(r *http.Request) (string, *Error) {
 	authorization := r.Header.Get("Authorization")
 	if authorization == "" {
-		return "", newError(ErrorCodeAccessTokenNotFound)
+		return "", NewError(ErrorCodeAccessTokenNotFound)
 	}
 	items := strings.Split(authorization, " ")
 	if len(items) != 2 {
-		return "", newError(ErrorCodeAccessTokenMalformed)
+		return "", NewError(ErrorCodeAccessTokenMalformed)
 	}
 	item := strings.ToLower(items[0])
 	if item != tokenType {
-		return "", newError(ErrorCodeAccessTokenMalformed)
+		return "", NewError(ErrorCodeAccessTokenMalformed)
 	}
 	return items[1], nil
 }
