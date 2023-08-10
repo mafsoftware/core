@@ -44,7 +44,6 @@ type AccessOptions struct {
 	Admin       TaskOptions
 	SecretAdmin TaskOptions
 	SecretOwner TaskOptions
-	Refresh     TaskOptions
 }
 
 type TaskHandleFunc[I, O any] func(input Task[I]) (*O, *Error)
