@@ -3,7 +3,6 @@ package core
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
@@ -57,7 +56,7 @@ type Validateable interface {
 // AddTask registers task to be executed when API endpoint is reached.
 func AddTask[I Validateable, O any](app *App, method, path string, options TaskOptions, fn TaskHandleFunc[I, O]) {
 	app.Router.Handle(method, path, func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-		logAppServe(app.Build, method, path)
+		app.logAppServe(method, path)
 		userInfo, err := app.validateRequestWithOptions(r, options)
 		if err != nil {
 			writeError(w, err)
@@ -86,7 +85,7 @@ func AddTask[I Validateable, O any](app *App, method, path string, options TaskO
 // AddTaskVoid registers a get-only task (no input data) to be executed when API endpoint is reached.
 func AddTaskVoid[O any](app *App, method, path string, options TaskOptions, fn TaskVoidHandleFunc[O]) {
 	app.Router.Handle(method, path, func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-		logAppServe(app.Build, method, path)
+		app.logAppServe(method, path)
 		userInfo, err := app.validateRequestWithOptions(r, options)
 		if err != nil {
 			writeError(w, err)
@@ -125,10 +124,6 @@ func TaskDELETE[I Validateable, O any](app *App, path string, options TaskOption
 }
 
 // Utils
-
-func logAppServe(build, method, path string) {
-	log.Println("com.mafsoftware.carbon:" + build + " : " + method + path)
-}
 
 func paramsFrom(ps httprouter.Params) map[string]string {
 	params := make(map[string]string)

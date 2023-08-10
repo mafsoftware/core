@@ -128,3 +128,7 @@ func (app *App) extractToken(r *http.Request) (string, *Error) {
 	}
 	return items[1], nil
 }
+
+func (a App) logAppServe(method, path string) {
+	a.Logger.LogSystemInfo(a.Build + " : " + method + path)
+}
