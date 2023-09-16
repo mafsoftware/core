@@ -70,3 +70,17 @@ func (a Access) HasEqualOrMoreAccess(other Access) bool {
 func (a Access) HasEqualOrMoreAccessThan(other Access) bool {
 	return a <= other
 }
+
+type EntityDeleteRequest struct {
+	Id string `json:"id"`
+}
+
+func (r *EntityDeleteRequest) Validate(info UserInfo) *Error {
+	if len(r.Id) == 0 {
+		return NewError(ErrorCodeMissingRequiredFields)
+	}
+	return nil
+}
+
+// SuccessResponse is used for requests that succeed but aren't returning a body.
+type SuccessResponse struct{}
