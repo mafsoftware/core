@@ -20,6 +20,8 @@ const (
 	ErrorCodeAppSecretKeyNotFound        ErrorCode = 10010
 	ErrorCodeInvalidAppSecretKey         ErrorCode = 10011
 	ErrorCodeEndpointForbidden           ErrorCode = 10012
+	ErrorCodePendingImplementation       ErrorCode = 10013
+	ErrorCodeMissingRequiredFields       ErrorCode = 10014
 )
 
 func errorText(code ErrorCode) string {
@@ -50,6 +52,10 @@ func errorText(code ErrorCode) string {
 		return "Invalid app secret key"
 	case ErrorCodeEndpointForbidden:
 		return "You don't have access to this endpoint"
+	case ErrorCodePendingImplementation:
+		return "Pending Implementation"
+	case ErrorCodeMissingRequiredFields:
+		return "Missing required fields"
 	default:
 		return ""
 	}
@@ -83,6 +89,10 @@ func errorHttpStatusCode(code ErrorCode) int {
 		return http.StatusUnauthorized
 	case ErrorCodeEndpointForbidden:
 		return http.StatusForbidden
+	case ErrorCodePendingImplementation:
+		return http.StatusInternalServerError
+	case ErrorCodeMissingRequiredFields:
+		return http.StatusBadRequest
 	default:
 		return -1
 	}
@@ -102,5 +112,14 @@ func NewErrorWithDetails(code ErrorCode, details string) *Error {
 		StatusCode:  errorHttpStatusCode(code),
 		Description: errorText(code),
 		Info:        info,
+	}
+}
+
+func NewErrorPendingImplementation() *Error {
+	code := ErrorCodePendingImplementation
+	return &Error{
+		Code:        code,
+		StatusCode:  errorHttpStatusCode(code),
+		Description: errorText(code),
 	}
 }
