@@ -84,3 +84,11 @@ func (r *EntityDeleteRequest) Validate(info UserInfo) *Error {
 
 // SuccessResponse is used for requests that succeed but aren't returning a body.
 type SuccessResponse struct{}
+
+// SMTPConfig contains configuration data for sending SMTP emails.
+type SMTPConfig struct {
+	Host     string
+	Port     string
+	From     string
+	Password string
+}
