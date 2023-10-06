@@ -18,9 +18,9 @@ type App struct {
 	Logger
 	Build           string
 	Router          *httprouter.Router
-	claimsProvider  AccessClaimsProvider
-	appSecretKey    string
-	serverSecretKey string
+	ClaimsProvider  AccessClaimsProvider
+	AppSecretKey    string
+	ServerSecretKey string
 }
 
 func NewApp(router *httprouter.Router, logger Logger, claimsProvider AccessClaimsProvider, appSecretKey, serverSecretKey, build string) *App {
@@ -28,9 +28,9 @@ func NewApp(router *httprouter.Router, logger Logger, claimsProvider AccessClaim
 		Logger:          logger,
 		Build:           build,
 		Router:          router,
-		claimsProvider:  claimsProvider,
-		appSecretKey:    appSecretKey,
-		serverSecretKey: serverSecretKey,
+		ClaimsProvider:  claimsProvider,
+		AppSecretKey:    appSecretKey,
+		ServerSecretKey: serverSecretKey,
 	}
 }
 
@@ -55,7 +55,7 @@ func (app *App) validateRequestWithOptions(r *http.Request, options TaskOptions)
 	if err != nil {
 		return UserInfo{Language: lang}, err
 	}
-	claims, err := app.claimsProvider(token, options, lang)
+	claims, err := app.ClaimsProvider(token, options, lang)
 	if err != nil {
 		return UserInfo{Language: lang}, err
 	}
@@ -82,7 +82,7 @@ func (app *App) checkAppSecretKey(r *http.Request) *Error {
 	if appKey == "" {
 		return NewError(ErrorCodeAppSecretKeyNotFound)
 	}
-	if appKey != app.appSecretKey {
+	if appKey != app.AppSecretKey {
 		return NewError(ErrorCodeInvalidAppSecretKey)
 	}
 	return nil
@@ -93,7 +93,7 @@ func (app *App) checkServerSecretKey(r *http.Request) *Error {
 	if secret == "" {
 		return NewError(ErrorCodeEndpointSecretKeyNotFound)
 	}
-	if secret != app.serverSecretKey {
+	if secret != app.ServerSecretKey {
 		return NewError(ErrorCodeEndpointForbidden)
 	}
 	return nil
